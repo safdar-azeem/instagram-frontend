@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  letter-spacing: -0.01px;
+}
+
+html {
+  font-size: 16px;
+}
+
+@media screen and (min-width: 1500px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1750px) {
+  html {
+    font-size: 20px;
+  }
+}
+
+@media screen and (min-width: 1900px) {
+  html {
+    font-size: 23px;
+  }
+}
+
+@media screen and (min-width: 2300px) {
+  html {
+    font-size: 28px;
+  }
+}
+
+:root {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply text-fs-base bg-white text-gray-800 font-normal;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1,
+.h1 {
+  @apply text-fs-10 font-bold text-gray-900;
+}
+
+h2,
+.h2 {
+  @apply text-fs-8 font-bold text-gray-900;
+}
+
+h3,
+.h3 {
+  @apply text-fs-6 font-[600] text-gray-900;
+}
+
+h4,
+.h4 {
+  @apply text-fs-4 font-[600] text-gray-900;
+}
+
+h5,
+.h5 {
+  @apply text-fs-3 font-medium text-gray-900;
+}
+
+h6,
+.h6 {
+  @apply text-fs-1 font-medium text-gray-900;
+}
+
+.Vue-Toastification__container {
+  top: 0% !important;
+  left: 50% !important;
+  z-index: 999 !important;
+  transform: translate(-50%, 0%) !important;
+  width: max-content !important;
+}
+
+@media (max-width: 600px) {
+  .Vue-Toastification__container {
+    padding-bottom: 10px !important;
+  }
+}
+
+.bottom-center {
+  bottom: 0% !important;
+  left: 50% !important;
+  z-index: 999 !important;
+  transform: translate(-50%, 0%) !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+.Vue-Toastification__toast--success {
+  background-color: var(--primary) !important;
+  border-radius: 8px !important;
+  min-height: 60px !important;
+  max-height: 60px !important;
+  padding: 19px 20px !important;
+}
+
+.Vue-Toastification__progress-bar {
+  opacity: 0 !important;
+}
+
+.Vue-Toastification__toast {
+  svg {
+    @apply mr-3;
+  }
+}
+
+.icon {
+  @apply text-gray-600;
+}
+
+.dark {
+  .icon {
+    @apply text-gray-700 sm:text-gray-600;
+  }
+}
