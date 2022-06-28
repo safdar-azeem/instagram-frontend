@@ -1,0 +1,61 @@
+.avatar {
+  @apply h-D w-D rounded-full object-cover;
+  img {
+    @apply h-D w-D rounded-full object-cover;
+  }
+
+  &.sm {
+    @apply h-sm w-sm;
+    img {
+      @apply h-sm w-sm;
+    }
+  }
+  &.md {
+    @apply h-md w-md;
+    img {
+      @apply h-md w-md;
+    }
+  }
+  &.lg {
+    @apply h-[110px] w-[110px] min-h-[110px] max-h-[110px];
+    img {
+      @apply h-[110px] w-[110px] min-h-[110px] max-h-[110px];
+    }
+  }
+}
+
+.avatar-text {
+  @apply text-fs-1 font-medium capitalize;
+  &.sm {
+    @apply -text-fs-1;
+  }
+  &.md {
+    @apply text-fs-1 sm:text-fs-base;
+  }
+  &.lg {
+    @apply text-fs-5;
+  }
+}
+
+.avatar-icon {
+  @apply h-5 w-5;
+  &.sm {
+    @apply h-4 w-4;
+  }
+  &.md {
+    @apply h-4 w-4;
+  }
+  &.lg {
+    @apply h-[50px] w-[50px];
+  }
+}
+
+.sidebar-avatar {
+  @apply bg-gray-200;
+}
+
+.dark {
+  .sidebar-avatar {
+    --gray-300: theme(colors.themes.dark.gray.gray-400);
+  }
+}
