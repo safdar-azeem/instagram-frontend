@@ -1,0 +1,47 @@
+.app-layout {
+  @apply flex h-screen;
+
+  .app-sidebar {
+    @apply fixed xl:w-[17%] w-[250px] h-full border-r border-gray-300 lg:flex hidden py-4 px-4 z-[9299] lg:z-[0] bg-white md:shadow-none;
+    box-shadow: 27px 1px 48px -4px rgba(78, 80, 80, 0.177) !important;
+    @screen lg {
+      box-shadow: none !important;
+    }
+  }
+
+  .app-header {
+    @apply fixed xl:left-[19%] lg:left-[280px] left-0 px-6 lg:pl-0 w-full top-0 py-3 z-[999] flex items-center justify-between bg-white;
+    @screen lg {
+      width: calc(100% - 280px);
+    }
+    @screen xl {
+      width: calc(100% - 19%);
+    }
+  }
+
+  .app-main {
+    @apply pl-6 pr-6 xl:pl-[19%] lg:pl-[280px] h-full pt-[66px] pb-2;
+  }
+}
+
+.dark {
+  .app-sidebar {
+    @apply border-r-0;
+    box-shadow: 27px 1px 48px -4px rgba(14, 15, 15, 0.221) !important;
+    --white: theme(colors.themes.dark.gray.gray-200);
+    --gray-100: theme(colors.themes.dark.gray.gray-300);
+    --gray-200: theme(colors.themes.dark.gray.gray-400);
+    --gray-300: #545456;
+    --primary-light: theme(colors.themes.dark.gray.gray-400);
+    --primary: theme(colors.themes.dark.gray.gray-200);
+    --primary-dark: theme(colors.themes.dark.gray.gray-800);
+    @screen lg {
+      --white: theme(colors.themes.dark.white);
+      --gray-100: theme(colors.themes.dark.gray.gray-100);
+      --gray-200: theme(colors.themes.dark.gray.gray-200);
+      --gray-300: theme(colors.themes.dark.gray.gray-300);
+      --primary-light: theme(colors.themes.dark.gray.gray-100);
+      --primary: theme(colors.themes.dark.gray.gray-200);
+    }
+  }
+}
