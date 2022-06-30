@@ -1,0 +1,27 @@
+.dark {
+  .card-gallery {
+    .gallery-item {
+      --gray-100: theme(colors.themes.dark.gray.gray-200);
+    }
+  }
+}
+
+.card-gallery {
+  @apply grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-5;
+  .gallery-item {
+    @apply flex flex-col gap-y-5;
+  }
+
+  &.profile-page-gallery {
+    @apply gap-6 xl:gap-5 grid-cols-1 md:grid-cols-2;
+    .gallery-item {
+      @apply gap-y-6  md:gap-y-4;
+    }
+  }
+  &.explore-page-gallery {
+    @apply grid grid-cols-2 sm:grid-cols-3 gap-4 xl:grid-cols-3;
+    .gallery-item {
+      @apply gap-y-4;
+    }
+  }
+}
