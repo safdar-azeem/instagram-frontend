@@ -1,0 +1,73 @@
+.post-card {
+  @apply flex flex-col gap-y-3 fadeIn;
+  .card-image {
+    @apply w-full h-full   object-cover;
+  }
+  .card-title {
+    @apply text-gray-800  text-[13.7px] sm:text-[14.5px];
+    &.trim-text {
+      @apply overflow-hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
+  .card-header,
+  .card-footer {
+    @apply flex justify-between;
+  }
+  .card-footer {
+    @apply -mt-1;
+  }
+
+  .card-content {
+    @apply px-6 py-6 min-h-[120px] flex  justify-center items-center rounded-md;
+    .card-title {
+      @apply text-fs-base whitespace-normal break-words break-all;
+    }
+    .trim-text {
+      @apply overflow-hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 7;
+      -webkit-box-orient: vertical;
+    }
+
+    &.gray {
+      @apply bg-gray-100 leading-7 text-black;
+    }
+  }
+}
+
+.overlay {
+  @apply h-full w-full text-white overflow-hidden fadeIn;
+  pointer-events: none;
+  &:before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-full bg-[#19191c56]  text-white overflow-hidden rounded-md z-0;
+  }
+  * {
+    z-index: 1;
+    color: white !important;
+  }
+  .btn {
+    &:hover {
+      @apply bg-white bg-opacity-20;
+    }
+  }
+}
+
+.card-enter-active,
+.card-leave-active {
+  @apply fadeIn;
+}
+
+.card-enter-from,
+.card-leave-to {
+  @apply fadeOut;
+}
+
+.single-post-card {
+  @screen lg {
+    height: calc(100vh - 6rem);
+  }
+}
