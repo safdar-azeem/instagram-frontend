@@ -1,0 +1,9 @@
+.nav-link {
+  @apply flex items-center gap-x-3 p-3 text-gray-500 rounded mb-1;
+  &.router-link-exact-active {
+    @apply text-primary-dark bg-primary-light font-medium;
+  }
+  &:hover {
+    @apply text-primary-dark  bg-primary-light;
+  }
+}
