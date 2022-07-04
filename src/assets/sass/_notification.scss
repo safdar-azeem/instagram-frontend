@@ -1,0 +1,9 @@
+.notification-list {
+  @apply flex flex-col gap-y-1;
+}
+.notification-item {
+  @apply flex items-start gap-x-1 hover:bg-gray-100 py-4 px-4;
+}
+.notification-item-content {
+  @apply flex items-start justify-between flex-1  gap-x-2 -text-fs-1;
+}
