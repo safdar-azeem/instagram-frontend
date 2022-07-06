@@ -1,0 +1,7 @@
+.profile-section-grid {
+  @apply flex flex-col md:grid mt-12 gap-x-10  gap-y-8;
+  @screen xl {
+    grid-template-columns: 300px 1fr;
+  }
+  grid-template-columns: 270px 1fr;
+}
