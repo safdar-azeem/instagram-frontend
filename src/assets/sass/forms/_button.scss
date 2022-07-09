@@ -1,0 +1,226 @@
+.btn {
+  @apply bg-gray-200  px-3 min-h-D h-D sm:px-4 rounded flex gap-x-3 justify-center items-center text-fs-base text-gray-800 font-medium cursor-pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease-out;
+  svg {
+    @apply text-fs-2;
+  }
+
+  &:hover {
+    @apply bg-gray-300;
+  }
+
+  &:focus {
+    @apply outline-gray-300;
+  }
+
+  // ripple effect
+  &:before {
+    @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0 h-0 bg-white opacity-[0.25];
+    content: '';
+    border-radius: inherit;
+    transition: transform 0.4s;
+  }
+  &:active:before {
+    width: 100%;
+    height: 100%;
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  // variants
+  &.transparent {
+    @apply bg-transparent text-gray-700;
+    &:focus {
+      @apply outline-gray-300;
+    }
+    &:hover {
+      @apply bg-gray-100;
+    }
+  }
+  &.outline {
+    @apply bg-transparent border border-gray-300 outline-0 text-gray-800;
+    &:focus {
+      @apply outline-gray-300;
+    }
+    &:hover {
+      @apply bg-gray-200 border border-gray-200;
+    }
+  }
+  &.primary {
+    @apply bg-primary text-primary-fg;
+    &:focus {
+      @apply outline-primary-dark;
+    }
+    &:hover {
+      @apply bg-primary-dark;
+    }
+    .icon {
+      @apply text-primary-fg;
+    }
+  }
+  &.danger {
+    @apply bg-danger text-white;
+    &:focus {
+      @apply outline-danger-dark;
+    }
+    &:hover {
+      @apply bg-danger-dark;
+    }
+    .icon {
+      @apply text-white;
+    }
+  }
+
+  &.like {
+    @apply bg-transparent;
+    *,
+    .btn-text {
+      @apply text-danger;
+    }
+    &:focus {
+      @apply outline-gray-300;
+    }
+    &:hover {
+      @apply bg-gray-100;
+    }
+  }
+
+  &.disabled,
+  &:disabled {
+    @apply cursor-not-allowed opacity-50;
+  }
+  &.neobrutalism {
+    @apply border border-gray-900 bg-[#DACDF4] text-gray-900;
+    box-shadow: 1.5px 3.5px 1px var(--gray-900);
+    &:focus,
+    &:active {
+      @apply border-black border outline-gray-900;
+      box-shadow: 1px 1px 1px var(--gray-900);
+    }
+  }
+
+  &.loading {
+    animation-play-state: paused;
+    animation-duration: 0s;
+    transition: all 0s;
+    @apply cursor-wait gap-x-2;
+    --spinner-height: 0.9rem;
+    --spinner-width: 0.9rem;
+    --spinner-border-color: theme('colors.gray.800');
+    pointer-events: none;
+    user-select: none;
+
+    &:after,
+    &:before {
+      @apply border-[2.2px] rounded-full border-solid animate-spin bg-transparent;
+      animation-duration: 0.7s;
+      height: var(--spinner-height);
+      border-color: var(--spinner-border-color);
+      width: var(--spinner-width);
+      content: '';
+      border-top-color: transparent;
+      border-right-color: transparent;
+    }
+
+    &:after {
+      @apply ml-0;
+    }
+
+    &:before {
+      @apply m-0 border-0;
+    }
+
+    &.left {
+      &:after {
+        @apply ml-0 border-0 h-0 w-0;
+      }
+      &:before {
+        @apply border-[2.2px] mr-2 static opacity-100 bg-transparent;
+      }
+    }
+
+    &.primary,
+    &.danger {
+      &:after,
+      &:before {
+        --spinner-border-color: var(--primary-fg);
+      }
+    }
+
+    &.lg {
+      --spinner-height: 1.2rem;
+      --spinner-width: 1.2rem;
+    }
+
+    &.sm {
+      --spinner-height: 0.9rem;
+      --spinner-width: 0.9rem;
+    }
+  }
+
+  // sizes
+  &.sm {
+    @apply min-h-sm h-sm  -text-fs-1;
+    svg {
+      @apply text-fs-base;
+    }
+  }
+  &.md {
+    @apply min-h-md h-md sm:min-h-md sm:h-md;
+    svg {
+      @apply text-fs-2;
+    }
+  }
+  &.lg {
+    @apply h-md min-h-md sm:min-h-lg sm:h-lg px-4 sm:px-6 text-fs-base sm:text-fs-1;
+    svg {
+      @apply text-fs-2 sm:text-fs-4;
+    }
+  }
+
+  // icons
+  &-icon {
+    &.loading {
+      @apply px-0;
+      * {
+        @apply hidden;
+      }
+    }
+    @apply min-w-[46px] w-[46px] h-[46px] px-0 gap-0;
+    svg {
+      @apply text-fs-4;
+    }
+    &.sm {
+      @apply min-w-sm w-sm h-sm;
+      svg {
+        @apply text-fs-1;
+      }
+    }
+    &.md {
+      @apply min-w-D sm:min-w-md w-D sm:w-md h-D sm:h-md;
+      svg {
+        @apply text-fs-3;
+      }
+    }
+    &.lg {
+      @apply min-w-D sm:min-w-lg w-D sm:w-lg h-D sm:h-lg;
+      svg {
+        @apply text-fs-2 sm:text-fs-4;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+    @apply border-t;
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
