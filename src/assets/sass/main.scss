@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './theme';
+@import './animation';
+@import './base';
+@import './app-layout';
+@import './navigation';
+@import './avatar';
+@import './modal';
+@import './forms/button';
+@import './forms/input';
+@import './card';
+@import './card-gallery';
+@import './skeleton';
+@import './dropdown';
+@import './positions';
+@import './profile';
+@import './offcanvas';
+@import './notification';
