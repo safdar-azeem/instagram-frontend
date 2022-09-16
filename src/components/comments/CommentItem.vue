@@ -4,8 +4,8 @@ import Button from '../reusable/Button.vue'
 import { useToast } from 'vue-toastification'
 import type { IComment, IUser } from '@/graphql'
 import Avatar from '@/components/reusable/Avatar.vue'
-import { AppRoutes } from '@/constants/routes.constant'
 import { defineComponent, reactive, toRefs } from 'vue'
+import { AppRoutes } from '@/constants/routes.constant'
 import { useDeleteCommentMutation, useLikeCommentMutation } from '@/graphql'
 
 export default defineComponent({
