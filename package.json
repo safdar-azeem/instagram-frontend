@@ -1,6 +1,6 @@
 {
-  "name": "hellogram",
-  "version": "0.0.0",
+  "name": "connected",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",
