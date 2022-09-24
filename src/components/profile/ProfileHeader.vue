@@ -52,7 +52,7 @@ export default defineComponent({
     watch(
       () => props.name,
       (newVal) => {
-        if (newVal) emit('handleName', { target: { value: newVal, name: 'name' } })
+        if (newVal) emit('handleName', newVal)
         state.name = newVal
         return newVal
       }
@@ -88,7 +88,7 @@ export default defineComponent({
           name="name"
           type="text"
           v-model="state.name"
-          @input="$emit('handleName', $event)"
+          @input="$emit('handleName', $event.target?.['value'])"
           placeholder="Please enter your name"
           class="mt-10 bg-transparent edit-input avatar-text lg w-full sm:w-max" />
         <p class="absolute mt-1 text-danger -text-fs-1">{{ error }}</p>
