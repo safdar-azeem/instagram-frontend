@@ -23,7 +23,7 @@ export default defineComponent({
   <section class="flex flex-col gap-3 bg-gray-100 px-5 py-5 rounded">
     <header class="h6">About</header>
     <p class="text-[14px]">{{ user?.bio }}</p>
-    <ul class="flex flex-col gap-6 mt-2">
+    <ul class="flex flex-col gap-6">
       <li
         class="flex items-center gap-x-4"
         v-if="user?.location">
