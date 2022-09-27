@@ -1,7 +1,7 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
 import useForm from '@/hooks/useForm'
 import Input from '../reusable/Input.vue'
+import { defineComponent, watch } from 'vue'
 import type { Form } from '../../types/form.type'
 
 export default defineComponent({
@@ -17,7 +17,7 @@ export default defineComponent({
   },
   emits: ['onSubmit'],
   setup(props, { emit }) {
-    const { state, handleChange, doValidation } = useForm(props.schema)
+    const { state, handleChange, doValidation, updateForm } = useForm(props.schema)
 
     const handleSubmit = (e: Event) => {
       e.preventDefault()
@@ -31,9 +31,17 @@ export default defineComponent({
       }
     }
 
+    watch(
+      () => props.values,
+      () => {
+        updateForm(props.values)
+      }
+    )
+
     return {
       handleSubmit,
       handleChange,
+      updateForm,
       state,
     }
   },
@@ -48,6 +56,7 @@ export default defineComponent({
       :key="item.name"
       :name="item.name"
       :type="item.type"
+      :class="item.class"
       :label="item.label"
       :variant="item.variant"
       v-for="item in schema"
