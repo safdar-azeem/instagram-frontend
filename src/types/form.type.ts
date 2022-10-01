@@ -6,5 +6,5 @@ export interface Form {
   value: string
   variant?: 'primary' | 'neobrutalism'
   validation?: (value: string) => string
-  cols?: string
+  class?: string
 }
