@@ -2,29 +2,12 @@ import type { Form } from '../types/form.type'
 
 export const profileUpdateJson: Form[] = [
   {
-    name: 'name',
-    placeholder: 'Add your name...',
-    label: 'Name',
-    type: 'text',
-    value: '',
-    cols: 'md:col-span-2',
-    validation(value: string) {
-      return value.length < 0
-        ? 'Name is required'
-        : value.length > 18
-        ? 'Name is too long'
-        : value.length < 3
-        ? 'Name is too short'
-        : ''
-    },
-  },
-  {
     name: 'bio',
     placeholder: 'Add a short bio...',
     label: 'Bio',
     type: 'textarea',
     value: '',
-    cols: 'md:col-span-2',
+    class: 'lg:col-span-2',
   },
   {
     name: 'location',
