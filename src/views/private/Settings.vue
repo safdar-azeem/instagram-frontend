@@ -1,24 +1,25 @@
 <script lang="ts">
-import useForm from '@/hooks/useForm'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
+import Form from '@/components/reusable/Form.vue'
 import Input from '@/components/reusable/Input.vue'
 import usePhotoUpload from '@/hooks/usePhotoUpload'
 import Button from '@/components/reusable/Button.vue'
 import { AppRoutes } from '@/constants/routes.constant'
+import { defineComponent, reactive, toRefs } from 'vue'
 import CoverPhoto from '@/components/profile/CoverPhoto.vue'
 import { profileUpdateJson } from '@/json/profileUpdate.json'
-import { defineComponent, reactive, toRefs, watch } from 'vue'
+import { useMeQuery, useUpdateProfileMutation } from '@/graphql'
 import ProfileHeader from '@/components/profile/ProfileHeader.vue'
 import ThemeDropdown from '@/components/settings/ThemeDropdown.vue'
 import SettingActionBtns from '@/components/settings/SettingActionBtns.vue'
-import { useMeQuery, useUpdateProfileMutation, useUploadPhotoMutation } from '@/graphql'
 
 export default defineComponent({
   name: 'Settings',
   components: {
     Input,
     Button,
+    Form,
     CoverPhoto,
     ProfileHeader,
     SettingActionBtns,
@@ -37,21 +38,15 @@ export default defineComponent({
 
     const { result: me, loading: meLoading, error: meError } = useMeQuery()
     const { handleUploadPhoto, uploadPhotoLoading } = usePhotoUpload()
-    const { state: formState, handleChange, doValidation, updateForm } = useForm(profileUpdateJson)
+    const userName = reactive({
+      value: String(me?.value?.me?.name),
+      error: '',
+    })
+
     const state = reactive({
       avatar: '',
       cover: '',
     })
-
-    watch(
-      () => me.value,
-      (newVal) => {
-        if (newVal?.me) {
-          updateForm(newVal.me)
-        }
-      },
-      { immediate: true }
-    )
 
     const handleAvatar = (file: any) => (state.avatar = file)
     const handleCover = (file: any) => (state.cover = file)
@@ -70,15 +65,21 @@ export default defineComponent({
       return data
     }
 
-    const handleSubmit = async () => {
-      const isValid = await doValidation()
-      if (!isValid) return
-      const photos = await upoadPhotos()
-      const formValues: any = {}
-      for (const key in formState) {
-        formValues[key] = formState[key].value
+    const handleSubmit = async (formValues: Object) => {
+      if (!userName.value) {
+        return (userName.error = 'Name is required')
+      } else if (userName.value.length > 15) {
+        return (userName.error = 'Name is too long')
+      } else if (userName.value.length < 3) {
+        return (userName.error = 'Name is too short')
+      } else {
+        userName.error = ''
       }
-      const data = { ...formValues, ...photos }
+
+      const photos = await upoadPhotos()
+
+      const data = { name: userName.value, ...formValues, ...photos }
+      console.log({ data })
       const result: any = await updateProfile(data)
       if (result.data?.updateProfile) {
         toast.success('Profile updated successfully')
@@ -90,12 +91,11 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      userName,
       me,
       meError,
       meLoading,
-      formState,
       handleCover,
-      handleChange,
       handleAvatar,
       handleSubmit,
       profileUpdateJson,
@@ -114,41 +114,30 @@ export default defineComponent({
         :isLoading="meLoading"
         @handleImage="handleCover"
         :edit="true" />
-      <ProfileHeader
-        :edit="true"
-        :isLoading="meLoading"
-        @handleName="handleChange"
-        :name="me?.me?.name || ''"
-        @handleImage="handleAvatar"
-        :error="formState.name.error"
-        :avatar="me?.me?.avatar || ''">
-        <SettingActionBtns
-          class="hidden lg:flex"
-          @handleSubmit="handleSubmit"
-          :loading="uploadPhotoLoading || updateProfileLoading"
-          :disabled="uploadPhotoLoading || updateProfileLoading" />
-      </ProfileHeader>
-      <form class="mt-7">
-        <section class="grid md:grid-cols-2 gap-x-6 xl:gap-x-10 gap-y-6">
-          <template v-for="input in profileUpdateJson">
-            <Input
-              :key="input.name"
-              :name="input.name"
-              :type="input.type"
-              :class="input.cols"
-              :label="input.label"
-              @input="handleChange"
-              v-if="input.name !== 'name'"
-              :placeholder="input.placeholder"
-              :value="formState[input.name].value" />
-          </template>
-          <ThemeDropdown />
-        </section>
-      </form>
-      <SettingActionBtns
-        class="lg:hidden flex justify-end"
-        :loading="uploadPhotoLoading || updateProfileLoading"
-        @handleSubmit="handleSubmit" />
+      <section class="relative">
+        <ProfileHeader
+          :edit="true"
+          :isLoading="meLoading"
+          :error="userName.error"
+          :avatar="me?.me?.avatar || ''"
+          :name="me?.me?.name || ''"
+          @handleImage="handleAvatar"
+          @handleName="userName.value = $event">
+        </ProfileHeader>
+        <form class="mt-7">
+          <Form
+            class="grid md:grid-cols-2 gap-x-6 xl:gap-x-10 gap-y-6"
+            :schema="profileUpdateJson"
+            :values="me?.me"
+            @onSubmit="handleSubmit">
+            <ThemeDropdown class="max-w-[400px]" />
+            <SettingActionBtns
+              class="lg:absolute lg:top-16 lg:right-1 col-span-2"
+              :loading="uploadPhotoLoading || updateProfileLoading"
+              :disabled="uploadPhotoLoading || updateProfileLoading" />
+          </Form>
+        </form>
+      </section>
     </section>
     <figure class="hidden md:block">
       <img
