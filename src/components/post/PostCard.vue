@@ -94,6 +94,7 @@ export default defineComponent({
           class="overlay absolute top-0 grid place-items-center">
           <PostFooter
             :post="post"
+            :me="me"
             variant="white"
             :isIconVariantSolid="true"
             :hideBookmark="true">
