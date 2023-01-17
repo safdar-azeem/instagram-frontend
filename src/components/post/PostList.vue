@@ -50,6 +50,7 @@ export default defineComponent({
       isModalOpen: false,
       selectedPost: null as IPost | null,
       posts: props.posts,
+      deletedPosts: [] as Array<string>,
       me: {} as any,
     })
 
@@ -75,6 +76,7 @@ export default defineComponent({
     }
 
     const handleDeletePost = (id) => {
+      state.deletedPosts = [...state.deletedPosts, id]
       state.posts = state.posts.filter((post) => post._id !== id)
       if (state.isModalOpen) {
         handleNextPost()
@@ -125,9 +127,24 @@ export default defineComponent({
       () => props.posts,
       () => {
         if (state.posts) {
+          if (state.deletedPosts.includes(state.selectedPost?._id)) {
+            state.selectedPost = null
+            state.isModalOpen = false
+            return
+          }
+
           state.posts = state.posts.filter((post) => {
             return props.posts.find((p) => p._id === post._id)
           })
+
+          if (state.selectedPost) {
+            const newPost = props.posts.find((post) => post._id === state.selectedPost._id)
+            if (newPost) {
+              state.selectedPost = newPost
+            } else {
+              handleNextPost()
+            }
+          }
         }
         state.posts = props.posts
       }
