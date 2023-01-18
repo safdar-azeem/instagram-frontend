@@ -1,33 +1,72 @@
 <script lang="ts">
-import { useExplorePostsLazyQuery } from '@/types/graphql.types'
-import { defineComponent, onMounted, onUnmounted, defineAsyncComponent } from 'vue'
+import { useExplorePostsLazyQuery, useExplorePostsQuery } from '@/types/graphql.types'
+import {
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  defineAsyncComponent,
+  reactive,
+  toRefs,
+} from 'vue'
 import { useInfiniteScrollPagination } from '@/hooks/useInfiniteScrollPagination'
 const PostList = defineAsyncComponent(() => import('@/components/post/PostList.vue'))
+import debounce from './../../utils/debounce'
 
 export default defineComponent({
   name: 'Explore',
   components: { PostList },
   setup() {
+    const state = reactive({
+      explorePostsLoading: false,
+    })
+
     const { limit, loadMore } = useInfiniteScrollPagination()
 
     const {
-      load: loadExplorePosts,
-      result: explorePostsData,
+      result: explorePosts,
+      onResult: onExplorePostsResult,
       loading: explorePostsLoading,
-      error: explorePostsError,
-    } = useExplorePostsLazyQuery({
+      fetchMore: loadExplorePosts,
+    } = useExplorePostsQuery({
       limit: limit.value,
     })
 
-    const handleScroll = () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+    onExplorePostsResult((result) => {
+      state.explorePostsLoading = false
+    })
+
+    const handleScroll = debounce(() => {
+      const bottomOfPage =
+        document.documentElement.getBoundingClientRect().bottom <= window.innerHeight
+
+      if (bottomOfPage && !explorePostsLoading.value) {
         loadMore()
-        loadExplorePosts()
+        loadExplorePosts({
+          variables: {
+            limit: limit.value,
+          },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult) return prev
+            return {
+              ...prev,
+              explorePosts: [
+                ...prev.explorePosts,
+                ...fetchMoreResult.explorePosts.filter(
+                  (post) => !prev.explorePosts.find((p) => p._id === post._id)
+                ),
+              ],
+            }
+          },
+        })
       }
-    }
+    }, 500)
 
     onMounted(() => {
-      loadExplorePosts()
+      loadExplorePosts({
+        variables: {
+          limit: limit.value,
+        },
+      })
       window.addEventListener('scroll', handleScroll)
     })
 
@@ -36,9 +75,8 @@ export default defineComponent({
     })
 
     return {
-      explorePostsData,
-      explorePostsLoading,
-      explorePostsError,
+      ...toRefs(state),
+      explorePosts,
     }
   },
 })
@@ -47,12 +85,12 @@ export default defineComponent({
 <template>
   <div>
     <PostList
-      :posts="explorePostsData?.explorePosts"
+      :posts="explorePosts?.explorePosts"
       :loading="explorePostsLoading"
       :columnsOnLgScreens="3"
       :columnsOnMdScreens="3"
       :columnsOnSmScreens="2"
       :isCardPhotoOnly="true"
-      v-if="explorePostsData?.explorePosts" />
+      v-if="explorePosts?.explorePosts.length" />
   </div>
 </template>
