@@ -60,6 +60,7 @@ export default defineComponent({
           v-for="comment in commentsData.getComments"
           :key="comment?._id"
           :comment="comment"
+          class="mb-5"
           :me="meData?.me"
           :postUserId="post?.user._id" />
       </div>
