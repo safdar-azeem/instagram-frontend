@@ -113,7 +113,7 @@ export default defineComponent({
             v-if="readAbleImage">
             <img
               :src="readAbleImage"
-              class="w-full rounded-lg object-contain aspect-square"
+              class="w-full rounded-lg object-contain max-h-[400px]"
               alt="" />
             <Button
               icon="ion:close"
@@ -126,9 +126,7 @@ export default defineComponent({
       </main>
     </template>
     <template v-slot:modal-footer>
-      <footer
-        class="flex gap-x-2 justify-end items-center pb-1"
-        :class="readAbleImage ? 'mt-2' : '-mt-2 '">
+      <footer class="-mt-2 flex gap-x-2 justify-end items-center pb-1">
         <UploadBtn
           buttonClass="border-none md"
           icon="ph:image-square-fill"
