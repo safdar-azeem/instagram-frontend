@@ -1,12 +1,12 @@
 <script lang="ts">
-import { useInfiniteScrollPagination } from '@/hooks/useInfiniteScrollPagination'
-import type { IPost } from '@/types/graphql.types'
-import { useExplorePostsLazyQuery, useGetPostByIdQuery, useMeQuery } from '@/types/graphql.types'
-import { defineComponent, onMounted, onUnmounted, defineAsyncComponent } from 'vue'
 import PostCardSkeleton from '@/components/skeletons/PostSkeleton.vue'
+import { useGetPostByIdQuery, useMeQuery } from '@/types/graphql.types'
+import { defineAsyncComponent, defineComponent } from 'vue'
 const CommentList = defineAsyncComponent(() => import('@/components/comments/CommentList.vue'))
 const PostCard = defineAsyncComponent(() => import('@/components/post/PostCard.vue'))
-const PostList = defineAsyncComponent(() => import('@/components/post/PostList.vue'))
+const ExplorePostList = defineAsyncComponent(
+  () => import('@/components/explore/ExplorePostList.vue')
+)
 const CreateComment = defineAsyncComponent(() => import('@/components/comments/CreateComment.vue'))
 const Button = defineAsyncComponent(() => import('@/components/reusable/Button.vue'))
 const Modal = defineAsyncComponent(() => import('@/components/reusable/Modal.vue'))
@@ -19,56 +19,16 @@ export default defineComponent({
     CreateComment,
     PostCardSkeleton,
     Button,
-    PostList,
+    ExplorePostList,
   },
   props: ['id'],
   setup(props) {
-    const {
-      result: post,
-      loading: postLoading,
-      error: postError,
-      onError,
-      onResult,
-    } = useGetPostByIdQuery({
+    const { result: post, loading: postLoading } = useGetPostByIdQuery({
       postId: props.id,
     })
+    const { result: meData } = useMeQuery()
 
-    const { limit, loadMore } = useInfiniteScrollPagination()
-
-    const {
-      load: loadExplorePosts,
-      result: explorePostsData,
-      loading: explorePostsLoading,
-      error: explorePostsError,
-    } = useExplorePostsLazyQuery({
-      limit: limit.value,
-    })
-
-    const handleScroll = () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        loadMore()
-        loadExplorePosts()
-      }
-    }
-
-    onMounted(() => {
-      loadExplorePosts()
-      window.addEventListener('scroll', handleScroll)
-    })
-
-    onUnmounted(() => {
-      window.removeEventListener('scroll', handleScroll)
-    })
-
-    const { result: meData, loading: meLoading } = useMeQuery()
-    return { post, postLoading, meData, explorePostsData, explorePostsLoading }
-  },
-  computed: {
-    posts() {
-      return this.explorePostsData?.explorePosts.filter(
-        (post: IPost) => post._id !== this.post?.getPostById?._id
-      )
-    },
+    return { post, postLoading, meData }
   },
 })
 </script>
@@ -103,15 +63,8 @@ export default defineComponent({
           :postId="post?.getPostById?._id" />
       </aside>
     </section>
-    <PostList
+    <ExplorePostList
       class="mt-12"
-      :posts="posts"
-      :loading="explorePostsLoading"
-      :columnsOnLgScreens="3"
-      :columnsOnMdScreens="3"
-      :columnsOnSmScreens="1"
-      :isCardPhotoOnly="true"
-      v-if="posts"
       :skipPostId="post?.getPostById?._id" />
   </div>
 </template>
