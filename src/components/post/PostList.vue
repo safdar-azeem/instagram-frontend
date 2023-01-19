@@ -97,6 +97,8 @@ export default defineComponent({
           } else {
             newPost.likes = post.likes.filter((like) => like !== meData?.value.me._id)
           }
+
+          if (state.selectedPost?._id === id) state.selectedPost = newPost
           return newPost
         }
         return post
@@ -140,7 +142,10 @@ export default defineComponent({
           if (state.selectedPost) {
             const newPost = props.posts.find((post) => post._id === state.selectedPost._id)
             if (newPost) {
-              state.selectedPost = newPost
+              state.selectedPost = {
+                ...newPost,
+                likes: state.selectedPost.likes,
+              }
             } else {
               handleNextPost()
             }
