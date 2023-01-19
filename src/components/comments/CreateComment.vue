@@ -77,9 +77,9 @@ export default defineComponent({
         size="md"
         radius="rounded-full" />
       <Button
-        text="Comment"
-        :loading="createCommentLoading"
-        :disabled="comment.length === 0"
+        :text="!createCommentLoading ? 'Comment' : 'Posting...'"
+        :isLoading="createCommentLoading"
+        :disabled="comment.length === 0 || createCommentLoading"
         @click="handleCreateComment"
         size="sm" />
     </section>
